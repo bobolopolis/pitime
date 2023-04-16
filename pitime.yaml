@@ -1,0 +1,29 @@
+header:
+  version: 10
+machine: raspberrypi
+distro: pitime
+target:
+  - pitime-image
+repos:
+  meta-pitime:
+    path: meta-pitime
+  poky:
+    url: https://git.yoctoproject.org/git/poky
+    refspec: 09def309f91929f47c6cce386016ccb777bd2cfc
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+  meta-raspberrypi:
+    url: https://github.com/agherzan/meta-raspberrypi.git
+    refspec: 2a06e4e84b04fc900f3a4524581548c9b5e57362
+local_conf_header:
+  meta-pitime: |
+    EXTRA_IMAGE_FEATURES = "debug-tweaks"
+    PACKAGE_CLASSES = "package_rpm"
+    INIT_MANAGER = "systemd"
+    IMAGE_CLASSES += "pitime_image"
+    IMAGE_FSTYPES += "pitime-img"
+    INITRAMFS_IMAGE = "pitime-image-initramfs"
+    # Remove kernel from initramfs
+    RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base = ""
